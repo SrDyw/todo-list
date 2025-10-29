@@ -6,7 +6,7 @@ export function useTask() {
 
   const getTask = (name: string): ITaskSet | undefined => {
     const allSet = getAll();
-    return allSet.find((x) => x.name == name);
+    return undefined
   };
 
   const setTask = (taskSet: ITaskSet, task: ITask) => {};

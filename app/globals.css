@@ -29,29 +29,128 @@ body {
   position: relative;
 }
 
-.rainbow-outline:focus-within::after {
+input:is(:-webkit-autofill, :autofill) {
+  border-radius: 24px;
+}
+
+.rainbow-outline::after {
   z-index: -1;
   position: absolute;
   content: "";
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: calc(100% + 8px);
-  height: calc(100% + 8px);
-  background: linear-gradient(#ff0000, #0000ff, #008000, #ee82ee, #ffff00);
+  width: calc(100% + 6px);
+  height: calc(100% + 6px);
+  background: linear-gradient(45deg,
+      #ff6b6b, #ff8e35, #ffd93d, #6bcf7f, #4d96ff, #9d4edd, #ff6b6b);
   background-size: 400% 400%;
   border-radius: 26px;
-  animation: rainbrow 1s infinite ease-in-out;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: rainbow-flow 4s linear infinite;
 }
 
-@keyframes rainbrow {
+.rainbow-outline::before {
+  z-index: -1;
+  position: absolute;
+  content: "";
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + 16px);
+  height: calc(100% + 16px);
+  background: linear-gradient(45deg,
+      #ff6b6b, #ff8e35, #ffd93d, #6bcf7f, #4d96ff, #9d4edd, #ff6b6b);
+  background-size: 400% 400%;
+  border-radius: 30px;
+  animation: rainbow-flow 4s linear infinite;
+  filter: blur(20px);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.rainbow-outline:focus-within::after,
+.rainbow-outline:focus-within::before {
+  opacity: 1;
+}
+
+@keyframes rainbow-flow {
   0% {
-    background-position: 0%;
+    background-position: 0% 50%;
   }
+
   50% {
-    background-position:  90%;
+    background-position: 100% 50%;
   }
+
   100% {
-    background-position: 0;
+    background-position: 0% 50%;
   }
+}
+
+/* Estados adicionales para mejor UX */
+.rainbow-outline:hover::after {
+  opacity: 0.7;
+}
+
+.rainbow-outline:active::before {
+  filter: blur(15px) brightness(1.2);
+}
+
+.fade-in-animation {
+  animation: fadein 0.3s ease-in-out forwards;
+}
+
+.fade-out-animation {
+  animation: fadeout 0.3s ease-in-out forwards;
+  overflow: hidden;
+}
+
+.task-out-animation {
+  animation: taskout 0.3s ease-in-out forwards;
+  overflow: hidden;
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes taskout {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+    max-height: 200px;
+  }
+
+  100% {
+    opacity: 0;
+    max-height: 0;
+  }
+}
+
+
+.task-list {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s;
 }
