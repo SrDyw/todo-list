@@ -18,7 +18,12 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     }
 
     const deleteTodo = (id: string) => {
-        setTodos(todos.filter(x => x.id != id));
+        let todo = todos.find(x => x.id === id);
+        if (todo != undefined)
+        {
+            todo.deleted = true;
+        }
+        // setTodos(todos.filter(x => x.id != id));
     }
 
     return <TodoContext.Provider value={{ saveTodos, todos, deleteTodo }}>

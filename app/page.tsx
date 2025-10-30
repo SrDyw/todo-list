@@ -27,19 +27,19 @@ export default function page() {
 
     saveTodos({
       id: crypto.randomUUID(),
-      title: formData.get("task-title")!.toString()
+      title: formData.get("task-title")!.toString(),
+      deleted: false
     });
   }
 
   const onDeleteTask = (id: string, element: HTMLElement) => {
     element.className += " task-out-animation";
-    console.log(element);
     setTimeout(() => {
-      console.log("deleted ", id, element.id);
-      // element.classList.add("hidden");
+      element.classList.add("hidden");
       deleteTodo(id);
-      
       updateHeight();
+
+      console.log(todos);
     }, 300)
   }
 

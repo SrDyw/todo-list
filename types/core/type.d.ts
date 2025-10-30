@@ -1,6 +1,7 @@
 export interface ITodo {    
     id: string,
-    title: string
+    title: string,
+    deleted: boolean
 }
 
 export type TodoContextType = {
