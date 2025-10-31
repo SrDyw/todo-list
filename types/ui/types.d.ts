@@ -4,5 +4,6 @@ export interface ButtonProps {
     Content?: string,
     Icon?: React.ReactNode,
     OnClick?: MouseEventHandler<HTMLButtonElement>,
-    className?: string
+    className?: string,
+    IconBlur?: boolean
 }

@@ -53,6 +53,7 @@ export default function page() {
       id: Math.random().toString(),
       title,
       deleted: false,
+      startedAt: new Date()
     });
 
     updateContainerState();
