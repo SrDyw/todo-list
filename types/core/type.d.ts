@@ -2,19 +2,20 @@ export interface ITodo {
   id: string;
   title: string;
   deleted: boolean;
-  startedAt: Date;
-  started: boolean;
+  isActive: boolean;
+  seconds: number
 }
 
 export type TodoContextType = {
   todos: ITodo[];
   saveTodos: (todo: ITodo) => void;
   deleteTodo: (id: string) => void;
-  getActiveTodos: () => ITodo[];
+  getTodos: () => ITodo[];
+  resumeOrStartTodo: (todo: ITodo) => void
 };
 
 export type TodoModalContextType = {
-  setSelectedTodo: (todo: ITodo) => void;
+  onOpen: (todo: ITodo) => void;
 };
 
 export type TodoModalType = {

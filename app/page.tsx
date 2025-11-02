@@ -25,11 +25,11 @@ import { TodoModalContext } from "@/context/TodoModalContext";
 
 export default function page() {
   const { getTask } = useTask();
-  const { todos, saveTodos, deleteTodo, getActiveTodos } = useContext(
+  const { todos, saveTodos, deleteTodo, getTodos } = useContext(
     TodoContext
   ) as TodoContextType;
 
-  const { setSelectedTodo } = useContext(
+  const { onOpen } = useContext(
     TodoModalContext
   ) as TodoModalContextType;
   const listRef = useRef<HTMLUListElement>(null);
@@ -53,7 +53,8 @@ export default function page() {
       id: Math.random().toString(),
       title,
       deleted: false,
-      startedAt: new Date()
+      isActive: false,
+      seconds: 0
     });
 
     updateContainerState();
@@ -75,13 +76,12 @@ export default function page() {
   };
 
   const handleTodoClick = (todo: ITodo) => {
-    setSelectedTodo(todo);
+    onOpen(todo);
   };
 
   function updateContainerState() {
-    const activeTodos = getActiveTodos();
+    const activeTodos = getTodos();
 
-    console.log(activeTodos.length);
 
     if (activeTodos.length >= 1) {
       containerRef.current?.classList.add("justify-between");

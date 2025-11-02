@@ -6,12 +6,19 @@ import {
   TodoModalContextType,
   TodoContextType,
 } from "@/types/core/type";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  MouseEventHandler,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { TodoContext } from "./TodoContext";
 import { todo } from "node:test";
 import { formatTime, getSplitedTime } from "@/lib/libs";
-import IcPlay from "@/components/icons/IcPlay"
+import IcPlay from "@/components/icons/IcPlay";
 import Button from "@/components/ui/Button";
+import { simpleTodo } from "@/mocks/todo.tamplates";
 
 export const TodoModalContext =
   React.createContext<TodoModalContextType | null>(null);
@@ -19,46 +26,42 @@ export const TodoModalContext =
 const TodoModalProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [selectedTodo, setSelectedTodo] = useState<ITodo | null>({
-    deleted: false,
-    id: "asdasd",
-    title: "pan con queso",
-    startedAt: new Date()
-  });
+  const [selectedTodo, setSelectedTodo] = useState<ITodo>(simpleTodo);
+  const { getTodos, resumeOrStartTodo } = useContext(
+    TodoContext
+  ) as TodoContextType;
 
   const modalRef = useRef<HTMLDivElement | null>(null);
 
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const formatedTime = (t: number) => formatTime(getSplitedTime(t));
+
+  const handlePlay = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    resumeOrStartTodo(selectedTodo);
+  };
+
+  const onOpen = (todo: ITodo) => {
+    setIsOpen(true);
+    setSelectedTodo(todo);
+  };
+
   const onClose = () => {
     modalRef.current?.classList.remove("move-up-animation");
+
     setTimeout(() => {
       modalRef.current?.classList.add("move-down-animation");
       setTimeout(() => {
-        setSelectedTodo(null);
+        setIsOpen(false);
+        // setSelectedTodo(null);
       }, 280);
     }, 100);
   };
 
-  const [time, setTime] = useState<number>(0);
-
-  useEffect(() => {
-    if (selectedTodo == null) return;
-
-    const timeDiff = new Date().getTime() - selectedTodo.startedAt.getTime();
-    setTime(Math.floor(timeDiff / 1000));
-    const interval = setInterval(() => {
-      setTime((prevTime) =>  prevTime + 1);
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [selectedTodo]);
-
-  const formatedTime = (t: number) => formatTime(getSplitedTime(t))
-
   return (
-    <TodoModalContext.Provider value={{ setSelectedTodo }}>
-      {selectedTodo != null && (
+    <TodoModalContext.Provider value={{ onOpen }}>
+      {isOpen && (
         <div
           className="fixed top-0 w-screen h-screen z-50 backdrop-blur-lg"
           onClick={onClose}
@@ -69,12 +72,22 @@ const TodoModalProvider: React.FC<{ children: React.ReactNode }> = ({
               onClick={onClose}
             >
               <div className="flex justify-between w-full items-center">
-                <p className="font-bold">{selectedTodo.title}</p>
-              <Button Icon={<IcPlay/>} className="hover:bg-[#ffffff50] transition-all duration-75"/>
+                <p className="font-bold">{selectedTodo?.title}</p>
+                <Button
+                  Icon={<IcPlay />}
+                  className="hover:bg-[#ffffff50] transition-all duration-75"
+                  OnClick={handlePlay}
+                />
               </div>
             </div>
-            <div className="w-full justify-center text-center mt-8 ">
-              <p className="text-7xl font-black">{formatedTime(time)}</p>
+            <div className="w-full justify-center text-center mt-8">
+              <p
+                className={`text-7xl font-black ${
+                  !selectedTodo?.isActive ? "text-otlined" : ""
+                }`}
+              >
+                {formatedTime(selectedTodo.seconds)}
+              </p>
             </div>
           </div>
         </div>

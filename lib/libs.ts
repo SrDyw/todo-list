@@ -7,12 +7,11 @@ export function getSplitedTime(seconds: any): TimeType {
   const minutes = Math.floor(s / 60);
   s %= 60;
 
-  console.log(s);
   return { hours, minutes, seconds: s };
 }
 
 export function formatTime({ hours, minutes, seconds }: TimeType) {
-  const h = hours.toString().padStart(2, "0");
+  const h = hours;
   const m = minutes.toString().padStart(2, "0");
   const s = seconds.toString().padStart(2, "0");
   return `${h}h ${m}m ${s}s`;

@@ -6,7 +6,7 @@ export function useStorage<T>({ key }: UseStorageProps) {
   function getAll(): T {
     const str = localStorage.getItem(key);
 
-    return JSON.parse(str ?? "{}") as T;
+    return JSON.parse(str ?? "[]") as T;
   }
 
   function set(data: T) {
