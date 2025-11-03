@@ -6,12 +6,17 @@ export default function Button({
   Icon,
   OnClick,
   className,
-  IconBlur = true
+  IconBlur = true,
+  Disabled
 }: ButtonProps) {
   return (
     <button
-      className={`cursor-pointer shrink-0 flex justify-center items-center gap-2 hover:bg-[#1f1f1f] rounded-full mx-4 p-3 relative ${className}`}
-      onClick={OnClick}
+      className={`shrink-0 flex justify-center items-center gap-2 rounded-full p-3 relative ${Disabled ? 'opacity-35 cursor-not-allowed' : 'cursor-pointer hover:bg-[#1f1f1f]'} ${className}`}
+      onClick={(e) => {
+        if (Disabled) return;
+        e.stopPropagation()
+        OnClick?.(e);
+      }}
     >
       {Content}
       <span>{Icon}</span>

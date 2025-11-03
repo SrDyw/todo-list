@@ -12,6 +12,7 @@ export type TodoContextType = {
   deleteTodo: (id: string) => void;
   getTodos: () => ITodo[];
   resumeOrStartTodo: (todo: ITodo) => void
+  stopTodo: (todo: ITodo) => void
 };
 
 export type TodoModalContextType = {

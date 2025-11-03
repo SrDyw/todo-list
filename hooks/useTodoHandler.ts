@@ -22,27 +22,24 @@ export default function useTodoHandler() {
         return;
       }
       //   Si confirma el cambio de tarea entonces actualizan los segundos de la tarea
-      activeTodo.seconds = secondsOfActive;
-      activeTodo.isActive = false;
+      todo.isActive = false;
     }
     clearCurrentInterval();
     todo.isActive = true;
     setActiveTodo(todo);
     setSecondsOfActive(todo.seconds);
-    startInterval(todo);
-  };
-  function clearCurrentInterval() {
-    if (timerInterval) clearInterval(timerInterval);
-  }
 
-  function startInterval(todo: ITodo) {
     const interval: NodeJS.Timeout = setInterval(() => {
       setSecondsOfActive((prev) => prev + 1);
       todo.seconds += 1;
     }, 1000);
 
     setTimerInterval(interval);
+  };
+  function clearCurrentInterval() {
+    if (timerInterval) clearInterval(timerInterval);
   }
+
   const pauseTodo = (todo: ITodo) => {
     if (todo.isActive) {
       clearCurrentInterval();
@@ -50,9 +47,14 @@ export default function useTodoHandler() {
       setActiveTodo(null);
       return;
     }
-
-    startInterval(todo);
   };
 
-  return { resumeOrStartTodo, pauseTodo, secondsOfActive };
+  const stopTodo = (todo: ITodo) => {
+    pauseTodo(todo);
+    todo.seconds = 0;
+    setSecondsOfActive(0);
+    setActiveTodo(null);
+  }
+
+  return { resumeOrStartTodo, pauseTodo, secondsOfActive, stopTodo };
 }
