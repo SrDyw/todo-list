@@ -22,7 +22,7 @@ export default function useTodoHandler() {
         return;
       }
       //   Si confirma el cambio de tarea entonces actualizan los segundos de la tarea
-      todo.isActive = false;
+      activeTodo.isActive = false;
     }
     clearCurrentInterval();
     todo.isActive = true;
