@@ -4,6 +4,17 @@ export interface ITodo {
   deleted: boolean;
   isActive: boolean;
   seconds: number
+  config?: ITodoConfig
+}
+
+export interface ITodoConfig {
+  subtodos: ISubTodo[]
+}
+
+export interface ISubTodo {
+  id: string,
+  title: string,
+  stopwatchValue: number,
 }
 
 export type TodoContextType = {

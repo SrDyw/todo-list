@@ -131,7 +131,7 @@ export default function page() {
             className="w-full flex justify-center items-center"
             onSubmit={handleSubmit}
           >
-            <div className="bg-[#181818] rounded-3xl border-1  border-[#282c34] rainbow-outline flex flex-nowrap items-center w-full">
+            <div className="bg-[#181818] rounded-3xl border  border-[#282c34] rainbow-outline flex flex-nowrap items-center w-full">
               <input
                 name="task-title"
                 type="text"
