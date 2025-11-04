@@ -16,3 +16,7 @@ export function formatTime({ hours, minutes, seconds }: TimeType) {
   const s = seconds.toString().padStart(2, "0");
   return `${h}h ${m}m ${s}s`;
 }
+
+export const wait = (ms: number): Promise<void> => {
+  return new Promise((r) => setTimeout(r, ms))
+}
