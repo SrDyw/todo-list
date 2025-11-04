@@ -189,10 +189,10 @@ const TodoModalProvider: React.FC<{ children: React.ReactNode }> = ({
           onClick={onCloseEditModal}
         >
           <div
-            className="absolute max-sm:w-full max-sm:bottom-0 left-[50%] translate-x-[-50%] md:top-[50%] md:translate-y-[-50%] w-[500px] h-[300px] shadow-2xl "
+            className="absolute max-sm:w-full max-sm:-bottom-5 left-[50%] translate-x-[-50%] md:top-[50%] md:translate-y-[-50%] w-[500px] shadow-2xl "
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="absolute top-0 left-0 w-full bg-[#181818] h-full z-0 p-6 rounded-2xl fle flex-col">
+            <div className=" top-0 left-0 w-full bg-[#181818] h-full z-0 p-6 rounded-2xl fle flex-col">
               {/* HEADER */}
               <div className="header justify-between flex items-center bg-[#121212] rounded-3xl p-2 px-4 mb-4">
                 <p className="font-black text-2xl truncate">
@@ -215,7 +215,7 @@ const TodoModalProvider: React.FC<{ children: React.ReactNode }> = ({
                 />
               </div>
               {/* FOOTER */}
-              <div className="footer absolute bottom-0 left-0 p-4 flex justify-end items-center w-full gap-3">
+              <div className="footer mt-12 left-0 p-4 flex justify-end items-center w-full gap-3">
                 <Button
                   Content="Accept"
                   className="bg-blue-500 hover:bg-white hover:text-gray-900"

@@ -97,7 +97,7 @@ export default function page() {
     <>
       <div className="h-screen w-screen flex justify-center items-center flex-col">
         <div
-          className="w-[80%] min-w-[400px] max-w-[700px] h-[80vh] flex flex-col items-center justify-center"
+          className="w-[80%] min-w-[320px] max-w-[700px] h-[80vh] flex flex-col items-center justify-center"
           ref={containerRef}
         >
           <h1 className="text-5xl font-black uppercase mb-6 text-center leading-8">
