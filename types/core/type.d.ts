@@ -3,18 +3,31 @@ export interface ITodo {
   title: string;
   deleted: boolean;
   isActive: boolean;
-  seconds: number
-  config?: ITodoConfig
+  seconds: number;
+  config?: ITodoConfig;
 }
 
 export interface ITodoConfig {
-  subtodos: ISubTodo[]
+  duration: number;
+  intervals: number;
+  isBreakTimeActive: boolean;
+  seconds: number;
+  breakDurations: number;
+}
+
+export interface IPomodoroItem {
+  title: string;
+  icon: React.ReactNode;
+  seconds: number;
+  isBreak: boolean;
+  id: number;
+  percentaje: number
 }
 
 export interface ISubTodo {
-  id: string,
-  title: string,
-  stopwatchValue: number,
+  id: string;
+  title: string;
+  stopwatchValue: number;
 }
 
 export type TodoContextType = {
@@ -22,8 +35,10 @@ export type TodoContextType = {
   saveTodos: (todo: ITodo) => void;
   deleteTodo: (id: string) => void;
   getTodos: () => ITodo[];
-  resumeOrStartTodo: (todo: ITodo) => void
-  stopTodo: (todo: ITodo) => void
+  resumeOrStartTodo: (todo: ITodo) => void;
+  stopTodo: (todo: ITodo) => void;
+  secondsOfActive: number;
+  updateTodoStorage: () => void;
 };
 
 export type TodoModalContextType = {
@@ -33,3 +48,11 @@ export type TodoModalContextType = {
 export type TodoModalType = {
   isOpen: boolean;
 };
+
+
+export interface AppConfig {
+  pomodoro: {
+    timeScale: number,
+    timeAlias: "(m)" | "(s)"
+  }
+}

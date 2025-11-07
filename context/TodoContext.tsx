@@ -12,7 +12,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [todos, setTodos] = useState<ITodo[]>([]);
 
-  const { resumeOrStartTodo: resumeOrStartTodoProcess, secondsOfActive, stopTodo } = useTodoHandler();
+  const { resumeOrStartTodo: resumeOrStartTodoProcess, secondsOfActive, stopTodo: stopTodoProcess } = useTodoHandler();
   const { set, getAll } = useStorage<ITodo[]>({ key: "main" });
 
   const getTodos = (): ITodo[] => todos.filter((x) => x.deleted == false);
@@ -21,9 +21,12 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const saveTodos = (todo: ITodo) => {
     setTodos([...todos, todo]);
-    updateTodoStorage();
-
   };
+  
+  useEffect(() => {
+    if (firstRender) return;
+    updateTodoStorage();
+  }, [todos])
 
   useEffect(() => {
     const storagedTodos = getAll();
@@ -42,6 +45,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
 
   }, [secondsOfActive]);
 
+
   const deleteTodo = (id: string) => {
     let todo = todos.find((x) => x.id === id);
     if (todo != undefined) {
@@ -51,16 +55,24 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     updateTodoStorage();
   };
 
-  const updateTodoStorage = () => set(getTodos());
+  const updateTodoStorage = () => {
+    const todos = getTodos();
+    set(todos);
+  }
 
   const resumeOrStartTodo = (todo: ITodo) => {
     resumeOrStartTodoProcess(todo);
     updateTodoStorage();
   }
 
+  const stopTodo = (todo: ITodo) => {
+    stopTodoProcess(todo);
+    updateTodoStorage();
+  }
+
   return (
     <TodoContext.Provider
-      value={{ saveTodos, todos, deleteTodo, getTodos, resumeOrStartTodo, stopTodo }}
+      value={{ saveTodos, todos, deleteTodo, getTodos, resumeOrStartTodo, stopTodo, secondsOfActive, updateTodoStorage }}
     >
       {children}
     </TodoContext.Provider>

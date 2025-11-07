@@ -50,11 +50,14 @@ export default function useTodoHandler() {
   };
 
   const stopTodo = (todo: ITodo) => {
+    if (todo.config) {
+      todo.config.seconds = 0;
+    }
     pauseTodo(todo);
     todo.seconds = 0;
     setSecondsOfActive(0);
     setActiveTodo(null);
-  }
+  };
 
   return { resumeOrStartTodo, pauseTodo, secondsOfActive, stopTodo };
 }

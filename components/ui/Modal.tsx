@@ -82,7 +82,7 @@ export default function Modal({ children, title, isOpen, footer, onClose, onSubm
                 {/* CONTENT */}
                 {children}
                 {/* FOOTER */}
-                {footer ? (<>{footer}</>) : (<div className="footer mt-12 left-0 p-4 flex justify-end items-center w-full gap-3">
+                {footer ? (<>{footer}</>) : (<div className="footer mt-12 mb-12 left-0 p-4 flex justify-end items-center w-full gap-3">
                     <Button
                         Content="Accept"
                         className="bg-blue-500 hover:bg-white hover:text-gray-900"

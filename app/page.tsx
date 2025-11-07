@@ -22,6 +22,7 @@ import {
 } from "@/types/core/type";
 import { TodoItem } from "@/components/TodoItem";
 import { TodoModalContext } from "@/context/TodoModalContext";
+import { simpleTodoConfig } from "@/mocks/todo.tamplates";
 
 export default function page() {
   const { getTask } = useTask();
@@ -54,7 +55,8 @@ export default function page() {
       title,
       deleted: false,
       isActive: false,
-      seconds: 0
+      seconds: 0,
+      config: simpleTodoConfig
     });
 
     updateContainerState();
@@ -97,7 +99,7 @@ export default function page() {
     <>
       <div className="h-screen w-screen flex justify-center items-center flex-col">
         <div
-          className="w-[80%] min-w-[320px] max-w-[700px] h-[80vh] flex flex-col items-center justify-center"
+          className="w-[90%] min-w-[320px] max-w-[700px] h-[80vh] flex flex-col items-center justify-center"
           ref={containerRef}
         >
           <h1 className="text-5xl font-black uppercase mb-6 text-center leading-8">
@@ -108,7 +110,7 @@ export default function page() {
             </span>
           </h1>
           <ul
-            className="w-[90%] flex flex-col mb-8 task-list mx-auto overflow-y-scroll px-3 "
+            className="w-full flex flex-col mb-8 task-list mx-auto overflow-y-scroll px-3 "
             ref={listRef}
           >
             <div className="mt-2"></div>
