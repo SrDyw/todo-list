@@ -1,6 +1,6 @@
 import { TodoContext } from "@/context/TodoContext";
 import { ITodo, TodoContextType } from "@/types/core/type";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useStorage } from "./useStorage";
 
 export default function useTodoHandler() {
@@ -15,6 +15,7 @@ export default function useTodoHandler() {
         return;
       }
       if (
+        !activeTodo.deleted &&
         confirm(
           "There is already an active todo, Do you want to pause it and start current one?"
         ) == false
@@ -44,7 +45,7 @@ export default function useTodoHandler() {
     if (todo.isActive) {
       clearCurrentInterval();
       todo.isActive = false;
-      setActiveTodo(null);
+      if (activeTodo?.id == todo.id) setActiveTodo(null);
       return;
     }
   };
@@ -55,8 +56,11 @@ export default function useTodoHandler() {
     }
     pauseTodo(todo);
     todo.seconds = 0;
-    setSecondsOfActive(0);
-    setActiveTodo(null);
+
+    if (todo.id == activeTodo?.id) {
+      setSecondsOfActive(0);
+      setActiveTodo(null);
+    }
   };
 
   return { resumeOrStartTodo, pauseTodo, secondsOfActive, stopTodo };

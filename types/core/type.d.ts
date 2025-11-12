@@ -1,3 +1,13 @@
+export interface IAppData {
+  sesions: ISession[];
+}
+
+export interface ISession {
+  id: string;
+  title: string;
+  todos: ITodo[];
+}
+
 export interface ITodo {
   id: string;
   title: string;
@@ -21,7 +31,7 @@ export interface IPomodoroItem {
   seconds: number;
   isBreak: boolean;
   id: number;
-  percentaje: number
+  percentaje: number;
 }
 
 export interface ISubTodo {
@@ -34,11 +44,14 @@ export type TodoContextType = {
   todos: ITodo[];
   saveTodos: (todo: ITodo) => void;
   deleteTodo: (id: string) => void;
-  getTodos: () => ITodo[];
+  getTodos: (sessionId: string) => ITodo[];
   resumeOrStartTodo: (todo: ITodo) => void;
   stopTodo: (todo: ITodo) => void;
   secondsOfActive: number;
   updateTodoStorage: () => void;
+  setCurrentSession: (v: string) => void;
+  session?: ISession;
+  data: IAppData | undefined
 };
 
 export type TodoModalContextType = {
@@ -49,10 +62,9 @@ export type TodoModalType = {
   isOpen: boolean;
 };
 
-
 export interface AppConfig {
   pomodoro: {
-    timeScale: number,
-    timeAlias: "(m)" | "(s)"
-  }
+    timeScale: number;
+    timeAlias: "(m)" | "(s)";
+  };
 }

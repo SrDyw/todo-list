@@ -177,11 +177,6 @@ const TodoModalProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const [pomodoroPercentaje, setPomodoroPercentaje] = useState<number>(0);
-
-  useEffect(() => {
-    console.log(pomodoroPercentaje);
-  }, [pomodoroPercentaje]);
-
   const [pomodorosItem, setpomodorosItem] = useState<IPomodoroItem[]>([]);
 
   return (
@@ -202,7 +197,7 @@ const TodoModalProvider: React.FC<{ children: React.ReactNode }> = ({
               >
                 <div className="flex justify-between w-full items-center">
                   <p className="font-bold truncate mr-3">
-                    {selectedTodo?.title}
+                    {selectedTodo?.id}-{selectedTodo?.title}
                   </p>
                   <div className="button-section flex gap-3 items-center justify-center bg-[#00000055] rounded-4xl p-2">
                     <Button

@@ -20,3 +20,5 @@ export function formatTime({ hours, minutes, seconds }: TimeType) {
 export const wait = (ms: number): Promise<void> => {
   return new Promise((r) => setTimeout(r, ms))
 }
+
+export const generateId = () => (Math.floor(Math.random() * 1_000_000)).toString().slice(0, 5);

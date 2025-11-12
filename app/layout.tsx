@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import TodoProvider from "@/context/TodoContext";
 import TodoModalProvider from "@/context/TodoModalContext";
+import Sidebar from "@/components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TodoProvider>
-          <TodoModalProvider>{children}</TodoModalProvider>
+          <TodoModalProvider>
+            <Sidebar />
+            {children}
+          </TodoModalProvider>
         </TodoProvider>
       </body>
     </html>
