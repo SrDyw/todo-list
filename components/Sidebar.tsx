@@ -24,7 +24,9 @@ export default function Sidebar() {
 
   const [selectedLink, setSelectedLink] = useState<LinkProps>();
 
-  const { data, updateTodoStorage } = useContext(TodoContext) as TodoContextType;
+  const { data, updateTodoStorage } = useContext(
+    TodoContext
+  ) as TodoContextType;
 
   const openEditModal = (v: LinkProps) => {
     setSelectedLink(v);
@@ -36,7 +38,7 @@ export default function Sidebar() {
   }, [data]);
 
   const refreshLinks = () => {
-    alert(data)
+    alert("data " + data?.sesions);
     if (data == undefined || data.sesions == undefined) return;
     setLinks(
       data.sesions.map(

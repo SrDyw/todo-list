@@ -72,7 +72,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
       createTemplateBaseData();
       return;
     }
-
+    alert("Set data " + appData.sesions);
     setData(appData);
   };
 
