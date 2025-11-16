@@ -85,7 +85,7 @@ export default function TodoChat({ id }: { id: string }) {
   };
 
   function updateContainerState() {
-    const activeTodos = getTodos(id);
+    const activeTodos = todos.filter((x) => !x.deleted);
 
     if (activeTodos.length >= 1) {
       containerRef.current?.classList.add("justify-between");

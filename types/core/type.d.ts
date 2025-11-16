@@ -6,6 +6,7 @@ export interface ISession {
   id: string;
   title: string;
   todos: ITodo[];
+  deleted: boolean
 }
 
 export interface ITodo {
@@ -51,7 +52,8 @@ export type TodoContextType = {
   updateTodoStorage: () => void;
   setCurrentSession: (v: string) => void;
   session?: ISession;
-  data: IAppData | undefined
+  data: IAppData | undefined;
+  deleteSession: (id: string, beforeDelete: () => void) => void
 };
 
 export type TodoModalContextType = {
@@ -67,4 +69,17 @@ export interface AppConfig {
     timeScale: number;
     timeAlias: "(m)" | "(s)";
   };
+  version: string;
+}
+
+export interface ModalContextOpenParams {
+  title: string;
+  onClose?: () => void;
+  onSubmit: () => void;
+  text: string;
+}
+
+export interface ConfirmModalContextType {
+  isOpen: boolean;
+  onOpen: (e: ModalContextOpenParams) => void;
 }

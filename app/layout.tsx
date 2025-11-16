@@ -4,6 +4,7 @@ import "./globals.css";
 import TodoProvider from "@/context/TodoContext";
 import TodoModalProvider from "@/context/TodoModalContext";
 import Sidebar from "@/components/Sidebar";
+import Providers from "@/components/Providers/Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,12 +31,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TodoProvider>
-          <TodoModalProvider>
-            <Sidebar />
-            {children}
-          </TodoModalProvider>
-        </TodoProvider>
+        <Providers>
+          <Sidebar />
+          {children}
+        </Providers>
       </body>
     </html>
   );

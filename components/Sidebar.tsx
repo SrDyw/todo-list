@@ -10,11 +10,14 @@ import IcEdit from "./icons/IcEdit";
 import Modal from "./ui/Modal";
 import TextInput from "./ui/TextInput";
 import IcChatBubble from "./icons/IcChatBubble";
+import { redirect } from "next/navigation";
+import IcClose from "./icons/IcClose";
+import { useConfirmModal } from "@/hooks/useConfirmModal";
 
 interface LinkProps {
   title: string;
   link: string;
-  id: number;
+  id: string;
 }
 
 export default function Sidebar() {
@@ -24,7 +27,9 @@ export default function Sidebar() {
 
   const [selectedLink, setSelectedLink] = useState<LinkProps>();
 
-  const { data, updateTodoStorage } = useContext(
+  const { onOpen } = useConfirmModal();
+
+  const { data, todos, session, updateTodoStorage, deleteSession } = useContext(
     TodoContext
   ) as TodoContextType;
 
@@ -34,21 +39,28 @@ export default function Sidebar() {
   };
 
   useEffect(() => {
+    console.log("current session", session);
+  }, [navIsOpen]);
+
+  useEffect(() => {
     refreshLinks();
-  }, [data]);
+  }, [data, todos]);
 
   const refreshLinks = () => {
-    alert("data " + data?.sesions);
     if (data == undefined || data.sesions == undefined) return;
+    console.log("SESSION", data.sesions);
+
     setLinks(
-      data.sesions.map(
-        (x, key) =>
-          ({
-            link: "/" + x.id,
-            title: x.title,
-            id: key,
-          } as LinkProps)
-      )
+      data.sesions
+        .filter((x) => !x.deleted)
+        .map(
+          (x, key) =>
+            ({
+              link: "/" + x.id,
+              title: x.title,
+              id: x.id,
+            } as LinkProps)
+        )
     );
   };
 
@@ -57,10 +69,25 @@ export default function Sidebar() {
     // setLinks( prev => (prev.filter(x => x.link != selectedLink?.link)))
   };
 
-  const onSubmit = () => {
+  const onDeleteSession = (id: string) => {
     if (data == undefined) return;
 
-    data.sesions[selectedLink!.id].title = selectedLink!.title;
+    deleteSession(id, () => {
+      setNavIsOpen(false);
+    });
+
+    refreshLinks();
+  };
+
+  const onSubmit = () => {
+    if (data == undefined) return;
+    var session = data.sesions.find((x) => x.id == selectedLink!.id);
+    if (session == null) {
+      alert("Error at finding session");
+      return;
+    }
+
+    session.title = selectedLink!.title;
     updateTodoStorage();
     refreshLinks();
     onClose();
@@ -97,10 +124,23 @@ export default function Sidebar() {
       {navIsOpen && (
         <Backdrop OnClick={() => setNavIsOpen((prev) => !prev)}>
           <div className="w-72 bg-[#181818] h-full top-0 absolute left-0 p-4">
-            <p className="mt-12 flex justify-start flex-col mb-8">
-              <span className="text-2xl font-black">Todo App</span>
-              <span className="opacity-60 font-semibold">Sessions</span>
-            </p>
+            <div className="mt-12 flex justify-between relative">
+              <p className="flex justify-start flex-col mb-8">
+                <span className="text-2xl font-black">Todo App</span>
+                <span className="opacity-60 font-semibold">Sessions</span>
+              </p>
+            </div>
+            <Button
+              Icon={<IcChatBubble />}
+              className="size-12 w-full"
+              Content="New session"
+              OnClick={() => {
+                setTimeout(() => {
+                  setNavIsOpen(false);
+                }, 1);
+                redirect("/");
+              }}
+            />
             {links.length == 0 ? (
               <p>No history</p>
             ) : (
@@ -108,10 +148,29 @@ export default function Sidebar() {
                 {links.map((x, i) => (
                   <li className="p-2 flex justify-between items-center" key={i}>
                     <a href={x.link}>{x.title}</a>
-                    <Button
-                      Icon={<IcEdit />}
-                      OnClick={() => openEditModal(x)}
-                    />
+                    <div className="flex justify-end gap-4">
+                      <Button
+                        Icon={<IcEdit />}
+                        OnClick={() => openEditModal(x)}
+                        className="p-0"
+                      />
+                      <Button
+                        Icon={<IcClose />}
+                        OnClick={() =>
+                          onOpen({
+                            text:
+                              "Are you sure you want to delete session named " +
+                              x.title,
+                            onSubmit: () => {
+                              console.log("passing", x);
+                              onDeleteSession(x.id);
+                            },
+                            title: "Delete session",
+                          })
+                        }
+                        className="p-0 text-red-300"
+                      />
+                    </div>
                   </li>
                 ))}
               </ul>

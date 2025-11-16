@@ -1,5 +1,6 @@
 "use client";
 
+import { appConfig } from "@/app.config";
 import { useStorage } from "@/hooks/useStorage";
 import useTodoHandler from "@/hooks/useTodoHandler";
 import { BaseAppData, BaseSessionData } from "@/mocks/data.template";
@@ -21,7 +22,9 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     secondsOfActive,
     stopTodo: stopTodoProcess,
   } = useTodoHandler();
-  const { set, getAll } = useStorage<IAppData>({ key: "main" });
+  const { set, getAll } = useStorage<IAppData>({
+    key: `main-${appConfig.version}`,
+  });
 
   const getTodos = (sesionId: string): ITodo[] => {
     const targetSesion = data?.sesions?.find((x) => x.id == sesionId);
@@ -35,20 +38,23 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   const [data, setData] = useState<IAppData>();
 
   const saveTodos = (todo: ITodo) => {
+    if (session == null) {
+      createBaseSession();
+    }
+
     setTodos([...todos, todo]);
   };
 
   useEffect(() => {
+    console.log("Session changed", session);
+  }, [session])
+
+  useEffect(() => {
     if (firstRender) return;
+
+    console.log("set", todos, "into", session);
+
     if (session == null) {
-      console.warn("Session is null, created");
-      const templateSession = BaseSessionData;
-      templateSession.todos = todos;
-
-      setSession(templateSession);
-      data!.sesions = [...(data?.sesions ?? []), templateSession];
-      updateTodoStorage();
-
       return;
     }
 
@@ -56,7 +62,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     session.todos = todos;
     data!.sesions = data!.sesions.filter((x) => x.id != session.id);
     data!.sesions = [...data!.sesions, session];
-    console.log(data);
+
     updateTodoStorage();
   }, [todos]);
 
@@ -72,7 +78,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
       createTemplateBaseData();
       return;
     }
-    alert("Set data " + appData.sesions);
+    appData.sesions = appData.sesions.filter((x) => !x.deleted);
     setData(appData);
   };
 
@@ -89,10 +95,13 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
 
     // No hay sesion para esta id
     if (targetSesion == undefined) {
+      setSession(undefined);
+      setTodos([]);
       return;
     }
 
     setSession(targetSesion);
+    console.log("berfero set", targetSesion);
     setTodos(targetSesion.todos.filter((x) => !x.deleted));
 
     const activeTodo = targetSesion.todos.find((x) => x.isActive);
@@ -120,7 +129,30 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
       console.warn("No data to save, skipped saving process");
       return;
     }
+    console.log("saving", data);
     set(data);
+  };
+
+  const deleteSession = (id: string, beforeRedirect?: () => void) => {
+    console.log("DATAAAA", data, id);
+    if (data == undefined) return;
+
+    var targetSession = data.sesions.find((x) => x.id == id);
+    if (targetSession != null) targetSession.deleted = true;
+
+    updateTodoStorage();
+    // refreshLinks();
+
+    if (session?.id == targetSession?.id) {
+      setTimeout(() => {
+        // setNavIsOpen(false);
+        // Al borrar la sesion actual y voler a crear un todo todo se va a la mierda
+        beforeRedirect?.();
+        setTodos([]);
+        setSession(undefined);
+        redirect("/");
+      }, 280);
+    }
   };
 
   const resumeOrStartTodo = (todo: ITodo) => {
@@ -132,6 +164,17 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     stopTodoProcess(todo);
     updateTodoStorage();
   };
+
+  function createBaseSession() {
+    alert("Session is null, created");
+    const templateSession = BaseSessionData();
+    templateSession.todos  = todos;
+
+    setSession(templateSession);
+    console.log("before set create", templateSession);
+    data!.sesions = [...(data?.sesions ?? []), templateSession];
+    return;
+  }
 
   return (
     <TodoContext.Provider
@@ -147,6 +190,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         setCurrentSession,
         session,
         data,
+        deleteSession,
       }}
     >
       {children}

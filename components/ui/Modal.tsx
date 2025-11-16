@@ -67,7 +67,6 @@ export default function Modal({ children, title, isOpen, footer, onClose, onSubm
         <div
             className="move-up-animation absolute max-sm:w-full max-sm:-bottom-5 left-[50%] translate-x-[-50%] sm:top-[50%] sm:translate-y-[-50%] w-[500px] shadow-2xl "
             onClick={(e) => e.stopPropagation()}
-            onTouchStart={(e) => console.log(e.touches[0].clientX)}
             ref={modalRef}
         >
             <div className="sm:hidden absolute top-0 mt-4 w-24 h-1 rounded-4xl bg-gray-500 left-[50%] translate-x-[-50%]"></div>
@@ -85,7 +84,7 @@ export default function Modal({ children, title, isOpen, footer, onClose, onSubm
                 {footer ? (<>{footer}</>) : (<div className="footer mt-12 mb-12 left-0 p-4 flex justify-end items-center w-full gap-3">
                     <Button
                         Content="Accept"
-                        className="bg-blue-500 hover:bg-white hover:text-gray-900"
+                        className="bg-blue-500 hover:bg-white hover:text-gray-900 p-3"
                         Icon={<IcEdit />}
                         IconBlur={false}
                         OnClick={(e) => {
