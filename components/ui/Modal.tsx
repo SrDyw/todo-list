@@ -38,7 +38,6 @@ export default function Modal({ children, title, isOpen, footer, onClose, onSubm
 
     const handleMouseMove = (e: TouchEvent) => {
         const [touch] = e.touches;
-        // console.log(touch.clientY, modalRef.current?.clientHeight);
         
         const p = -20
 

@@ -45,14 +45,9 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     setTodos([...todos, todo]);
   };
 
-  useEffect(() => {
-    console.log("Session changed", session);
-  }, [session])
 
   useEffect(() => {
     if (firstRender) return;
-
-    console.log("set", todos, "into", session);
 
     if (session == null) {
       return;
@@ -101,7 +96,6 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     setSession(targetSesion);
-    console.log("berfero set", targetSesion);
     setTodos(targetSesion.todos.filter((x) => !x.deleted));
 
     const activeTodo = targetSesion.todos.find((x) => x.isActive);
@@ -129,12 +123,10 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
       console.warn("No data to save, skipped saving process");
       return;
     }
-    console.log("saving", data);
     set(data);
   };
 
   const deleteSession = (id: string, beforeRedirect?: () => void) => {
-    console.log("DATAAAA", data, id);
     if (data == undefined) return;
 
     var targetSession = data.sesions.find((x) => x.id == id);
@@ -166,12 +158,10 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   function createBaseSession() {
-    alert("Session is null, created");
     const templateSession = BaseSessionData();
     templateSession.todos  = todos;
 
     setSession(templateSession);
-    console.log("before set create", templateSession);
     data!.sesions = [...(data?.sesions ?? []), templateSession];
     return;
   }

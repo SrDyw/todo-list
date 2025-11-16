@@ -38,9 +38,6 @@ export default function Sidebar() {
     setEditModalIsOpen(true);
   };
 
-  useEffect(() => {
-    console.log("current session", session);
-  }, [navIsOpen]);
 
   useEffect(() => {
     refreshLinks();
@@ -48,7 +45,6 @@ export default function Sidebar() {
 
   const refreshLinks = () => {
     if (data == undefined || data.sesions == undefined) return;
-    console.log("SESSION", data.sesions);
 
     setLinks(
       data.sesions
@@ -83,7 +79,6 @@ export default function Sidebar() {
     if (data == undefined) return;
     var session = data.sesions.find((x) => x.id == selectedLink!.id);
     if (session == null) {
-      alert("Error at finding session");
       return;
     }
 
@@ -162,7 +157,6 @@ export default function Sidebar() {
                               "Are you sure you want to delete session named " +
                               x.title,
                             onSubmit: () => {
-                              console.log("passing", x);
                               onDeleteSession(x.id);
                             },
                             title: "Delete session",
