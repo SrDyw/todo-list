@@ -5,7 +5,6 @@ import TodoProvider from "@/context/TodoContext";
 import TodoModalProvider from "@/context/TodoModalContext";
 import Sidebar from "@/components/Sidebar";
 import Providers from "@/components/Providers/Providers";
-import { URL } from "next/dist/compiled/@edge-runtime/primitives/url";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
