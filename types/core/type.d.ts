@@ -54,6 +54,7 @@ export type TodoContextType = {
   session?: ISession;
   data: IAppData | undefined;
   deleteSession: (id: string, beforeDelete: () => void) => void
+  editSession: (id: string, v: ISession) => void
 };
 
 export type TodoModalContextType = {

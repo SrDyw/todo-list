@@ -22,4 +22,5 @@ export interface InputTextProps {
   className?: string;
   containerClassName?: string;
   OnChange?: (v: string) => void;
+  autoFocus?: boolean
 }

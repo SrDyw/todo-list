@@ -27,7 +27,7 @@ import Sidebar from "@/components/Sidebar";
 
 export default function TodoChat({ id }: { id: string }) {
   const { getTask } = useTask();
-  const { todos, saveTodos, deleteTodo, getTodos, setCurrentSession } =
+  const { todos, saveTodos, deleteTodo, getTodos, setCurrentSession, session } =
     useContext(TodoContext) as TodoContextType;
 
   const { onOpen } = useContext(TodoModalContext) as TodoModalContextType;
@@ -77,8 +77,8 @@ export default function TodoChat({ id }: { id: string }) {
   };
 
   const updateHeight = () => {
-    const height = listRef.current?.scrollHeight ?? 0
-    listRef.current!.style.maxHeight = (height + 50) + "px";
+    const height = listRef.current?.scrollHeight ?? 0;
+    listRef.current!.style.maxHeight = height + 50 + "px";
   };
 
   const handleTodoClick = (todo: ITodo) => {
@@ -109,7 +109,11 @@ export default function TodoChat({ id }: { id: string }) {
             Todo list
             <br />
             <span className="font-bold opacity-30 text-lg">
-              What do you want to do?
+              {session == undefined ? (
+                <p>What do you want to do?</p>
+              ) : (
+                <>{session.title}</>
+              )}
             </span>
           </h1>
           <ul
@@ -146,7 +150,7 @@ export default function TodoChat({ id }: { id: string }) {
                 value={titleInput}
                 onChange={(e) => setTitleInput(e.currentTarget.value)}
               />
-              <Button Icon={<IcSend />} className="p-3 mr-2"/>
+              <Button Icon={<IcSend />} className="p-3 mr-2" />
             </div>
           </form>
         </div>

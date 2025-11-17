@@ -12,6 +12,7 @@ export default function TextInput({
   Type = "text",
   Label,
   SubmitConfig,
+  autoFocus
 }: InputTextProps) {
   const [internalV, setInternalV] = useState<string>("");
 
@@ -35,6 +36,7 @@ export default function TextInput({
           className={`w-full px-4 outline-none border-none ${className}`}
           placeholder={Placeholder}
           autoComplete="off"
+          autoFocus
           value={Value ?? internalV}
           onChange={(e) => {
             setInternalV(e.currentTarget.value);

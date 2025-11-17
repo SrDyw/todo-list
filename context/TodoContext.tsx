@@ -45,7 +45,6 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     setTodos([...todos, todo]);
   };
 
-
   useEffect(() => {
     if (firstRender) return;
 
@@ -159,12 +158,28 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
 
   function createBaseSession() {
     const templateSession = BaseSessionData();
-    templateSession.todos  = todos;
+    templateSession.todos = todos;
 
     setSession(templateSession);
     data!.sesions = [...(data?.sesions ?? []), templateSession];
     return;
   }
+
+  const editSession = (id: string, values: ISession) => {
+    if (data == null)
+    {
+      console.warn("Data is null");
+      return;
+    }
+    var session = data.sesions.find((x) => x.id == id);
+    if (session == null) {
+      return;
+    }
+
+    session.title = values.title;
+    setSession(prev => session && ({...session}));
+    updateTodoStorage();
+  };
 
   return (
     <TodoContext.Provider
@@ -181,6 +196,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         session,
         data,
         deleteSession,
+        editSession
       }}
     >
       {children}

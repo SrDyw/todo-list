@@ -5,5 +5,5 @@ export const appConfig : AppConfig = {
         timeAlias: "(s)",
         timeScale: 1
     },
-    version: "0.2.2"
+    version: "0.2.3"
 }
