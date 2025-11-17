@@ -13,6 +13,9 @@ import IcChatBubble from "./icons/IcChatBubble";
 import { redirect } from "next/navigation";
 import IcClose from "./icons/IcClose";
 import { useConfirmModal } from "@/hooks/useConfirmModal";
+import { appConfig } from "@/app.config";
+import IcGithub from "./icons/IcGithub";
+import IcPlus from "./icons/IcPlus";
 
 interface LinkProps {
   title: string;
@@ -37,7 +40,6 @@ export default function Sidebar() {
     setSelectedLink(v);
     setEditModalIsOpen(true);
   };
-
 
   useEffect(() => {
     refreshLinks();
@@ -119,23 +121,22 @@ export default function Sidebar() {
       {navIsOpen && (
         <Backdrop OnClick={() => setNavIsOpen((prev) => !prev)}>
           <div className="w-72 bg-[#181818] h-full top-0 absolute left-0 p-4">
-            <div className="mt-12 flex justify-between relative">
+            <div className="mt-12 flex justify-between relative w-full">
               <p className="flex justify-start flex-col mb-8">
                 <span className="text-2xl font-black">Todo App</span>
                 <span className="opacity-60 font-semibold">Sessions</span>
               </p>
+              <Button
+                Icon={<IcPlus />}
+                className="size-12"
+                OnClick={() => {
+                  setTimeout(() => {
+                    setNavIsOpen(false);
+                  }, 1);
+                  redirect("/");
+                }}
+              />
             </div>
-            <Button
-              Icon={<IcChatBubble />}
-              className="size-12 w-full"
-              Content="New session"
-              OnClick={() => {
-                setTimeout(() => {
-                  setNavIsOpen(false);
-                }, 1);
-                redirect("/");
-              }}
-            />
             {links.length == 0 ? (
               <p>No history</p>
             ) : (
@@ -169,6 +170,15 @@ export default function Sidebar() {
                 ))}
               </ul>
             )}
+            <div className="absolute bottom-4 w-full left-0 p-4 flex justify-between items-center">
+              <p className="">v{appConfig.version}</p>
+              <a
+                href="https://github.com/SrDyw/todo-list"
+                className="text-white"
+              >
+                <Button Icon={<IcGithub />} className="p-0" />
+              </a>
+            </div>
           </div>
         </Backdrop>
       )}
