@@ -8,9 +8,9 @@ import { useContext, useEffect } from "react";
 export default function page() {
   const { getTodos } = useContext(TodoContext) as TodoContextType;
 
-  useEffect(() => {
-    redirect("/new");
-  }, []);
+  // useEffect(() => {
+  //   redirect("/new");
+  // }, []);
 
-  return <div className="mt-24">Loading</div>;
+  return <div className="mt-24 w-screen h-screen flex justify-center items-center font-black text-3xl fixed">Loading</div>;
 }
