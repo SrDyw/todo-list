@@ -18,7 +18,7 @@ export const TodoItem = ({
       id={todo.id}
       onClick={() => onClick?.(todo)}
     >
-      <p className="font-semibold">{todo.title}</p>
+      <p className="font-semibold truncate">{todo.title}</p>
       {children}
       <div className="w-full h-full bg-[#181818] absolute top-0 left-0 -z-10 rounded-3xl"></div>
       <div className={`rounded-3xl absolute ${todo.isActive ? 'task-active-eff' : ''} rainbow`}></div>

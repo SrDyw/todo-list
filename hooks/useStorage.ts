@@ -3,10 +3,13 @@ export interface UseStorageProps {
 }
 
 export function useStorage<T>({ key }: UseStorageProps) {
-  function getAll(): T {
+  function getAll(): T | undefined {
     const str = localStorage.getItem(key);
-
-    return JSON.parse(str ?? "[]") as T;
+    if (str)
+    {
+      return JSON.parse(str) as T;
+    }
+    return undefined;
   }
 
   function set(data: T) {
