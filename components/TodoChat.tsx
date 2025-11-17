@@ -106,7 +106,7 @@ export default function TodoChat({ id }: { id: string }) {
           ref={containerRef}
         >
           <h1 className="text-5xl font-black uppercase mb-6 text-center leading-8 text-nowrap overflow-ellipsis">
-            Lista de tareas
+            Todo list
             <br />
             <span className="font-bold opacity-30 text-lg">
               What do you want to do?
