@@ -77,7 +77,8 @@ export default function TodoChat({ id }: { id: string }) {
   };
 
   const updateHeight = () => {
-    listRef.current!.style.maxHeight = listRef.current?.scrollHeight + "px";
+    const height = listRef.current?.scrollHeight ?? 0
+    listRef.current!.style.maxHeight = (height + 50) + "px";
   };
 
   const handleTodoClick = (todo: ITodo) => {
@@ -125,7 +126,7 @@ export default function TodoChat({ id }: { id: string }) {
                     onDeleteTask(todo.id, li!);
                   }}
                   Icon={<IcClose />}
-                  className="hover:bg-white hover:text-black"
+                  className="hover:bg-white hover:text-black p-4"
                 />
               </TodoItem>
             ))}
