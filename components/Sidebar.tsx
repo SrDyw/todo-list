@@ -92,7 +92,7 @@ export default function Sidebar() {
 
   return (
     <nav className="fixed text-white top-0 left-0 h-screen z-50">
-      <div className="z-10 absolute top-0 left-0">
+      <div className="z-10 absolute top-0 left-0 p-2">
         <Button
           Icon={<IcBars />}
           OnClick={() => setNavIsOpen((prev) => !prev)}
@@ -170,11 +170,12 @@ export default function Sidebar() {
                 ))}
               </ul>
             )}
-            <div className="absolute bottom-4 w-full left-0 p-4 flex justify-between items-center">
+            <div className="absolute bottom-2 w-full left-0 p-4 flex justify-between items-center">
               <p className="">v{appConfig.version}</p>
               <a
                 href="https://github.com/SrDyw/todo-list"
                 className="text-white"
+                target="_blank"
               >
                 <Button Icon={<IcGithub />} className="p-0" />
               </a>
