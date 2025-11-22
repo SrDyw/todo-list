@@ -13,5 +13,6 @@ export const BaseSessionData = () => {
     title: new Date().toDateString() + Math.random().toString().slice(0, 4),
     todos: [],
     deleted: false,
+    date: Date.now()
   } as ISession;
 };

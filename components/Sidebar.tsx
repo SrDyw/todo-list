@@ -57,6 +57,7 @@ export default function Sidebar() {
     setLinks(
       data.sesions
         .filter((x) => !x.deleted)
+        .sort((x, y) => x.date - x.date)
         .map(
           (x, key) =>
             ({

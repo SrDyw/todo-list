@@ -6,7 +6,8 @@ export interface ISession {
   id: string;
   title: string;
   todos: ITodo[];
-  deleted: boolean
+  deleted: boolean;
+  date: number //ms
 }
 
 export interface ITodo {
