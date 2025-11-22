@@ -1,5 +1,6 @@
 "use client";
 
+import Loading from "@/components/ui/Loading";
 import { TodoContext } from "@/context/TodoContext";
 import { TodoContextType } from "@/types/core/type";
 import { redirect } from "next/navigation";
@@ -12,5 +13,9 @@ export default function page() {
     redirect("/new");
   }, []);
 
-  return <div className="mt-24 w-screen h-screen flex justify-center items-center font-black text-3xl fixed">Loading</div>;
+  return (
+    <div className="mt-24 w-screen h-screen flex justify-center items-center font-black text-3xl fixed">
+      <Loading />
+    </div>
+  );
 }

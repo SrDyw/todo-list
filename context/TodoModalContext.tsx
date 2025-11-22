@@ -30,6 +30,7 @@ import IcClock from "@/components/icons/IcClock";
 import IcBolt from "@/components/icons/IcBolt";
 import IcIdea from "@/components/icons/IcIdea";
 import { appConfig } from "@/app.config";
+import IcArrowOpen from "@/components/icons/IcArrowOpen";
 
 export const TodoModalContext =
   React.createContext<TodoModalContextType | null>(null);
@@ -89,7 +90,6 @@ const TodoModalProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     updatePomodoroPercentaje();
-    
   }, [selectedTodo]);
 
   const onCloseEditModal = () => {
@@ -133,7 +133,7 @@ const TodoModalProvider: React.FC<{ children: React.ReactNode }> = ({
           id: i,
           seconds: !isBreak ? todo.config.duration : todo.config.breakDurations,
           icon: !isBreak ? <IcIdea /> : <IcClock />,
-          title: !isBreak ? "Tlabaja, tienes que tlabajal" : "Break",
+          title: !isBreak ? "Active time" : "Coffee time",
           isBreak,
           percentaje: 0,
         },
@@ -202,17 +202,17 @@ const TodoModalProvider: React.FC<{ children: React.ReactNode }> = ({
                   <div className="button-section flex gap-3 items-center justify-center bg-[#00000055] rounded-4xl p-2">
                     <Button
                       Icon={selectedTodo.isActive ? <IcPause /> : <IcPlay />}
-                      className="hover:bg-[#ffffff50] transition-all duration-75 mx-0 p-4"
+                      className="hover:bg-[#ffffff50] transition-all duration-75 mx-0 p-2"
                       OnClick={handlePlay}
                     />
                     <Button
                       Icon={<IcSettings />}
-                      className="hover:bg-[#ffffff50] transition-all duration-75 mx-0 p-0"
+                      className="hover:bg-[#ffffff50] transition-all duration-75 mx-0 p-2"
                       OnClick={() => onOpenEditModal(selectedTodo)}
                     />
                     <Button
                       Icon={<IcRestart />}
-                      className="hover:bg-[#ffffff50] transition-all duration-75 mx-0 p-0"
+                      className="hover:bg-[#ffffff50] transition-all duration-75 mx-0 p-2"
                       OnClick={handleStop}
                       Disabled={selectedTodo.seconds <= 0}
                     />
@@ -229,8 +229,9 @@ const TodoModalProvider: React.FC<{ children: React.ReactNode }> = ({
                 </p>
               </div>
               {/* POMODORO */}
+              <div className="text-2xl font-black mt-12">Pomodoro</div>
               {pomodorosItem && pomodorosItem.length > 0 && (
-                <ul className="max-sm:w-full p-8 relative mt-12 sm:max-w-[800px] sm:w-full">
+                <ul className="max-sm:w-full p-8 relative mt-4 sm:max-w-[800px] sm:w-full ">
                   <div className="absolute right-12 -top-4 rounded-3xl bg-blue-500 px-4 py-1 z-10 items-center flex justify-center shadow-md gap-4">
                     <IcClock />
                     {pomodorosItem[0].id} / {selectedTodo.config?.intervals}
@@ -334,6 +335,16 @@ const TodoModalProvider: React.FC<{ children: React.ReactNode }> = ({
               }}
             />
           </div>
+          <a
+            href="https://iep.edu.es/que-es-el-metodo-pomodoro/"
+            className="text-md text-blue-500 flex mt-4 items-center"
+            target="_blank"
+          >
+            Dont you know what Pomodoro method is?
+            <div className="scale-75">
+              <IcArrowOpen />
+            </div>
+          </a>
         </div>
       </Modal>
 
