@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import IcBars from "./icons/IcBars";
 import Button from "./ui/Button";
 import Backdrop from "./ui/Backdrop";
@@ -17,6 +17,7 @@ import { appConfig } from "@/app.config";
 import IcGithub from "./icons/IcGithub";
 import IcPlus from "./icons/IcPlus";
 import { BaseSessionData } from "@/mocks/data.template";
+import { wait } from "@/lib/libs";
 
 interface LinkProps {
   title: string;
@@ -32,6 +33,8 @@ export default function Sidebar() {
   const [selectedLink, setSelectedLink] = useState<LinkProps>();
 
   const { onOpen } = useConfirmModal();
+
+  const navRef = useRef<HTMLDivElement | null>(null);
 
   const {
     data,
@@ -74,6 +77,25 @@ export default function Sidebar() {
     // setLinks( prev => (prev.filter(x => x.link != selectedLink?.link)))
   };
 
+  const onCloseNavbar = async () => {
+    if (navRef.current) {
+      navRef.current.classList.remove("sidebar-open")
+      await wait(1)
+      navRef.current.classList.add("sidebar-close")
+      await wait(280);
+    }
+    setNavIsOpen(false);
+  };
+
+  const toggleNavbar = () => {
+    if (navIsOpen) {
+      onCloseNavbar();
+      return;
+    }
+
+    setNavIsOpen(true);
+  };
+
   const onDeleteSession = (id: string) => {
     if (data == undefined) return;
 
@@ -99,10 +121,7 @@ export default function Sidebar() {
   return (
     <nav className="fixed text-white top-0 left-0 h-screen z-50">
       <div className="z-10 absolute top-0 left-0 p-2">
-        <Button
-          Icon={<IcBars />}
-          OnClick={() => setNavIsOpen((prev) => !prev)}
-        />
+        <Button Icon={<IcBars />} OnClick={toggleNavbar} />
       </div>
       <Modal
         isOpen={editModalIsOpen}
@@ -126,8 +145,11 @@ export default function Sidebar() {
         />
       </Modal>
       {navIsOpen && (
-        <Backdrop OnClick={() => setNavIsOpen((prev) => !prev)}>
-          <div className="w-72 bg-[#181818] h-full top-0 absolute left-0 p-4">
+        <Backdrop OnClick={onCloseNavbar}>
+          <div
+            className="w-72 bg-[#181818] h-full top-0 absolute left-0 p-4 sidebar-open"
+            ref={navRef}
+          >
             <div className="mt-12 flex justify-between relative w-full">
               <p className="flex justify-start flex-col mb-8">
                 <span className="text-2xl font-black">Todo App</span>
@@ -138,7 +160,7 @@ export default function Sidebar() {
                 className="size-12"
                 OnClick={() => {
                   setTimeout(() => {
-                    setNavIsOpen(false);
+                    onCloseNavbar();
                   }, 1);
                   redirect("/");
                 }}

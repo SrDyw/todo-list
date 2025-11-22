@@ -2,10 +2,10 @@ import { ITodo, ITodoConfig } from "@/types/core/type";
 
 export const simpleTodoConfig: ITodoConfig = {
   seconds: 0,
-  duration: 0,
-  intervals: 0,
+  duration: 25,
+  intervals: 4,
   isBreakTimeActive: false,
-  breakDurations: 0
+  breakDurations: 10
 };
 
 export const simpleTodo: ITodo = {

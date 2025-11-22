@@ -2,8 +2,8 @@ import {AppConfig} from '@/types/core/type'
 
 export const appConfig : AppConfig = {
     pomodoro: {
-        timeAlias: "(s)",
-        timeScale: 1
+        timeAlias: "(m)",
+        timeScale: 60
     },
     version: "0.2.3"
 }

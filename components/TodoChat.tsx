@@ -24,6 +24,7 @@ import { TodoItem } from "@/components/TodoItem";
 import { TodoModalContext } from "@/context/TodoModalContext";
 import { simpleTodoConfig } from "@/mocks/todo.tamplates";
 import Sidebar from "@/components/Sidebar";
+import { appConfig } from "@/app.config";
 
 export default function TodoChat({ id }: { id: string }) {
   const { getTask } = useTask();
@@ -104,13 +105,14 @@ export default function TodoChat({ id }: { id: string }) {
         <div
           className="w-[90%] min-w-[320px] max-w-[700px] h-[80vh] flex flex-col items-center justify-center"
           ref={containerRef}
+          style={{transition: "all"}}
         >
           <h1 className="text-5xl font-black uppercase mb-6 text-center leading-8 text-nowrap overflow-ellipsis">
             Todo list
             <br />
             <span className="font-bold opacity-30 text-lg">
               {session == undefined ? (
-                <p>What do you want to do?</p>
+                <p className="mt-2">What do you want to do?</p>
               ) : (
                 <>{session.title}</>
               )}

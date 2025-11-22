@@ -26,7 +26,6 @@
   }
 }
 
-
 body {
   background: var(--background);
   color: var(--foreground);
@@ -288,5 +287,40 @@ input:is(:-webkit-autofill, :autofill) {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.loading-container {
+  display: flex;
+  animation: loading-spacing 2s ease-in-out infinite;
+  padding: 10px;
+}
+
+@keyframes loading-spacing {
+  0%,
+  100% {
+    justify-content: center;
+    gap: 4px;
+  }
+  50% {
+    justify-content: space-between;
+    gap: 20px;
+  }
+}
+
+.sidebar-open {
+  animation: sidebar-animation 280ms cubic-bezier(0.075, 0.82, 0.165, 1) forwards;
+}
+
+.sidebar-close {
+  animation: sidebar-animation 280ms cubic-bezier(0.075, 0.82, 0.165, 1) reverse;
+}
+
+@keyframes sidebar-animation {
+  0% {
+    transform: translateX(-300px);
+  }
+  100% {
+    transform: translateX(0);
   }
 }
