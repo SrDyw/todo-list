@@ -38,13 +38,15 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   const [data, setData] = useState<IAppData>();
 
   const saveTodos = (todo: ITodo) => {
-    if (session == null) {
-      createBaseSession();
+    let s = session;
+    if (s == null) {
+      s = createBaseSession();
     }
-
+    
+    s!.date = Date.now();
     setTodos([...todos, todo]);
+    setSession((prev) => s && { ...s });
   };
-
 
   useEffect(() => {
     if (firstRender) return;
@@ -123,6 +125,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
       console.warn("No data to save, skipped saving process");
       return;
     }
+    console.log(data);
     set(data);
   };
 
@@ -159,12 +162,29 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
 
   function createBaseSession() {
     const templateSession = BaseSessionData();
-    templateSession.todos  = todos;
+    templateSession.todos = todos;
+
+    console.log(templateSession);
 
     setSession(templateSession);
     data!.sesions = [...(data?.sesions ?? []), templateSession];
-    return;
+    return templateSession;
   }
+
+  const editSession = (id: string, values: ISession) => {
+    if (data == null) {
+      console.warn("Data is null");
+      return;
+    }
+    var session = data.sesions.find((x) => x.id == id);
+    if (session == null) {
+      return;
+    }
+
+    session.title = values.title;
+    setSession((prev) => session && { ...session });
+    updateTodoStorage();
+  };
 
   return (
     <TodoContext.Provider
@@ -181,6 +201,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
         session,
         data,
         deleteSession,
+        editSession,
       }}
     >
       {children}

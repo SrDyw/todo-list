@@ -6,7 +6,8 @@ export interface ISession {
   id: string;
   title: string;
   todos: ITodo[];
-  deleted: boolean
+  deleted: boolean;
+  date: number //ms
 }
 
 export interface ITodo {
@@ -54,6 +55,7 @@ export type TodoContextType = {
   session?: ISession;
   data: IAppData | undefined;
   deleteSession: (id: string, beforeDelete: () => void) => void
+  editSession: (id: string, v: ISession) => void
 };
 
 export type TodoModalContextType = {

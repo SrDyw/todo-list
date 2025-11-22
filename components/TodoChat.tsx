@@ -27,7 +27,7 @@ import Sidebar from "@/components/Sidebar";
 
 export default function TodoChat({ id }: { id: string }) {
   const { getTask } = useTask();
-  const { todos, saveTodos, deleteTodo, getTodos, setCurrentSession } =
+  const { todos, saveTodos, deleteTodo, getTodos, setCurrentSession, session } =
     useContext(TodoContext) as TodoContextType;
 
   const { onOpen } = useContext(TodoModalContext) as TodoModalContextType;
@@ -77,8 +77,8 @@ export default function TodoChat({ id }: { id: string }) {
   };
 
   const updateHeight = () => {
-    const height = listRef.current?.scrollHeight ?? 0
-    listRef.current!.style.maxHeight = (height + 50) + "px";
+    const height = listRef.current?.scrollHeight ?? 0;
+    listRef.current!.style.maxHeight = height + 50 + "px";
   };
 
   const handleTodoClick = (todo: ITodo) => {
@@ -105,11 +105,15 @@ export default function TodoChat({ id }: { id: string }) {
           className="w-[90%] min-w-[320px] max-w-[700px] h-[80vh] flex flex-col items-center justify-center"
           ref={containerRef}
         >
-          <h1 className="text-5xl font-black uppercase mb-6 text-center leading-8">
-            Todo List
+          <h1 className="text-5xl font-black uppercase mb-6 text-center leading-8 text-nowrap overflow-ellipsis">
+            Todo list
             <br />
             <span className="font-bold opacity-30 text-lg">
-              What do you want to do?
+              {session == undefined ? (
+                <p>What do you want to do?</p>
+              ) : (
+                <>{session.title}</>
+              )}
             </span>
           </h1>
           <ul
@@ -140,13 +144,13 @@ export default function TodoChat({ id }: { id: string }) {
               <input
                 name="task-title"
                 type="text"
-                className="bg-transparent outline-0 pl-4 font-bold text-3xl p-4 w-full placeholder:font-medium placeholder:text-2xl"
+                className="bg-transparent outline-0 pl-4 font-bold text-3xl p-4  w-full placeholder:font-medium placeholder:text-2xl"
                 placeholder="Some awsome name!"
                 autoComplete="off"
                 value={titleInput}
                 onChange={(e) => setTitleInput(e.currentTarget.value)}
               />
-              <Button Icon={<IcSend />} />
+              <Button Icon={<IcSend />} className="p-3 mr-2" />
             </div>
           </form>
         </div>

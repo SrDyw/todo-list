@@ -16,6 +16,7 @@ import { useConfirmModal } from "@/hooks/useConfirmModal";
 import { appConfig } from "@/app.config";
 import IcGithub from "./icons/IcGithub";
 import IcPlus from "./icons/IcPlus";
+import { BaseSessionData } from "@/mocks/data.template";
 
 interface LinkProps {
   title: string;
@@ -32,9 +33,14 @@ export default function Sidebar() {
 
   const { onOpen } = useConfirmModal();
 
-  const { data, todos, session, updateTodoStorage, deleteSession } = useContext(
-    TodoContext
-  ) as TodoContextType;
+  const {
+    data,
+    todos,
+    session,
+    updateTodoStorage,
+    deleteSession,
+    editSession,
+  } = useContext(TodoContext) as TodoContextType;
 
   const openEditModal = (v: LinkProps) => {
     setSelectedLink(v);
@@ -51,6 +57,7 @@ export default function Sidebar() {
     setLinks(
       data.sesions
         .filter((x) => !x.deleted)
+        .sort((x, y) => x.date - x.date)
         .map(
           (x, key) =>
             ({
@@ -79,20 +86,19 @@ export default function Sidebar() {
 
   const onSubmit = () => {
     if (data == undefined) return;
-    var session = data.sesions.find((x) => x.id == selectedLink!.id);
-    if (session == null) {
-      return;
-    }
 
-    session.title = selectedLink!.title;
-    updateTodoStorage();
+    editSession(selectedLink!.id, {
+      ...BaseSessionData(),
+      title: selectedLink!.title,
+    });
+
     refreshLinks();
     onClose();
   };
 
   return (
     <nav className="fixed text-white top-0 left-0 h-screen z-50">
-      <div className="z-10 absolute top-0 left-0">
+      <div className="z-10 absolute top-0 left-0 p-2">
         <Button
           Icon={<IcBars />}
           OnClick={() => setNavIsOpen((prev) => !prev)}
@@ -110,6 +116,7 @@ export default function Sidebar() {
             setSelectedLink((prev) => prev && { ...prev, title: v });
           }}
           Value={selectedLink?.title}
+          autoFocus
           Label={{ Name: "Title", Icon: <IcChatBubble /> }}
           SubmitConfig={{
             Icon: <IcEdit />,
@@ -170,11 +177,12 @@ export default function Sidebar() {
                 ))}
               </ul>
             )}
-            <div className="absolute bottom-4 w-full left-0 p-4 flex justify-between items-center">
+            <div className="absolute bottom-2 w-full left-0 p-4 flex justify-between items-center">
               <p className="">v{appConfig.version}</p>
               <a
                 href="https://github.com/SrDyw/todo-list"
                 className="text-white"
+                target="_blank"
               >
                 <Button Icon={<IcGithub />} className="p-0" />
               </a>
